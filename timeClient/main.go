@@ -33,7 +33,7 @@ func main() {
 		defer close(done)
 		for {
 			_, message, err := c.ReadMessage()
-			t4 := time.Now().UnixNano() / 1e6
+			t4 := time.Now().UnixNano() / 1e3
 			if err != nil {
 				fmt.Println("read:", err)
 				return
@@ -44,13 +44,13 @@ func main() {
 			t3, _ := strconv.ParseInt(s[3], 10, 64)
 
 			o := (t2 + t3 - t1 - t4) / 2
-			total_o += o
+			total_o += o / 1e3
 		}
 	}()
 
 	for i := 1; i <= 100; i++ {
 		time.Sleep(time.Millisecond * 500)
-		datas := []byte(strconv.Itoa(i) + "," + strconv.FormatInt(time.Now().UnixNano()/1e6, 10))
+		datas := []byte(strconv.Itoa(i) + "," + strconv.FormatInt(time.Now().UnixNano()/1e3, 10))
 		err := c.WriteMessage(websocket.TextMessage, datas)
 		fmt.Println(string(datas))
 		if err != nil {

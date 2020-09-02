@@ -42,14 +42,14 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 	for {
 		// receive data
 		_, data, err := c.ReadMessage()
-		t2 := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
+		t2 := strconv.FormatInt(time.Now().UnixNano()/1e3, 10)
 		s := strings.Split(string(data), ",")
 		t1 := string(s[1])
 		if err != nil {
 			log.Println("failed to read")
 			break
 		}
-		datas := []byte(s[0] + "," + t1 + "," + t2 + "," + strconv.FormatInt(time.Now().UnixNano()/1e6, 10))
+		datas := []byte(s[0] + "," + t1 + "," + t2 + "," + strconv.FormatInt(time.Now().UnixNano()/1e3, 10))
 		if err := c.WriteMessage(ws.TextMessage, datas); err != nil {
 			log.Println("failed to write")
 			break
